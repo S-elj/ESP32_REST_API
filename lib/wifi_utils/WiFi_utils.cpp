@@ -22,7 +22,7 @@ String get_wifi_status(int status) {
 }
 
 void setup_wifi() {
-    Serial.println("[WiFi_utils] Connexion au Wi-Fi '" + String(ENV_WIFI_SSID) + "'");
+    Serial.println("[WiFi_utils] Connexion au Wi-Fi '" + String(WIFI_SSID) + "'");
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     int status = WL_IDLE_STATUS;
     while(status != WL_CONNECTED) {

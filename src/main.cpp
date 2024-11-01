@@ -1,8 +1,9 @@
-#include <WiFi.h>
 #include <TFT_eSPI.h>
-#include <ESPAsyncWebServer.h>
-#include <WiFi_utils.h>
-#include <Routes.h>
+
+#include "ESPAsyncWebServer.h"
+
+#include "WiFi_utils.h"
+#include "Routes.h"
 
 AsyncWebServer server(80);
 
@@ -13,7 +14,6 @@ void setup() {
   setup_wifi();
 
   server.on("/", HTTP_GET, routes::monitoring::handle_root);
-  
   server.begin();
 }
 

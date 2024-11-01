@@ -1,0 +1,4 @@
+# Gère la configuration du WiFi pour le projet
+[env]
+wifi_ssid = ""
+wifi_password = ""

@@ -6,3 +6,5 @@
 .vscode/ipch
 .cache
 compile_commands.json
+# Fichiers de configurations qui ne doivent pas être commit au projet
+config/wifi.ini

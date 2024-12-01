@@ -37,6 +37,51 @@ paths:
               schema:
                 $ref: "#/components/schemas/GenericSensor"
 
+
+  /v1/mechanical/buzzer/activate:
+    post:
+      tags:
+        - Mechanical
+      summary: "Active le buzzer après un délai et pendant une durée spécifiée."
+      description: "Envoie une requête pour activer le buzzer après un délai (`delay`) et pendant une durée spécifiée (`duration`)."
+      parameters:
+        - name: delay
+          in: query
+          required: true
+          description: "Délai avant d'activer le buzzer (en millisecondes)."
+          schema:
+            type: integer
+        - name: duration
+          in: query
+          required: true
+          description: "Durée pendant laquelle le buzzer sonne (en millisecondes)."
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivateBuzzerResponse"
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /v1/mechanical/buzzer/stop:
+    post:
+      tags:
+        - Mechanical
+      summary: "Arrête le buzzer immédiatement."
+      description: "Envoie une requête pour arrêter le buzzer si ce dernier est en train de sonner."
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StopBuzzerResponse"
+
 components:
   schemas:
     Metadata:
@@ -57,3 +102,22 @@ components:
           type: string
         value:
           type: integer
+     ActivateBuzzerResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        delay:
+          type: integer
+        duration:
+          type: integer
+    StopBuzzerResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string

@@ -12,8 +12,21 @@ void setup() {
 
   // Connexion au WiFi avec `WiFi_utils`
   setup_wifi();
+  // Montage du système de fichiers SPIFFS
+  if (!SPIFFS.begin(true)) {
+    Serial.println("Erreur lors du montage du système de fichiers SPIFFS !");
+    return;
+  }
+  // Mise en place des pins
+  pinMode(36, INPUT);
 
-  server.on("/", HTTP_GET, routes::monitoring::handle_root);
+  server.on("/openapi.yml", HTTP_GET, routes::oapi::handle_oapi_schema);
+  server.on("/scalar", HTTP_GET, routes::oapi::handle_scalar);
+
+  server.on("/v1/metadata", HTTP_GET, routes::monitoring::handle_root);
+
+  server.on("/v1/sensors/photocell", HTTP_GET, routes::sensors::handle_photocell_sensor);
+
   server.begin();
 }
 

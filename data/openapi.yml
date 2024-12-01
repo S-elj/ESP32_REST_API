@@ -1,9 +1,9 @@
 openapi: 3.1.0
 
 info:
-  title: %PROJECT_NAME%
-  description: %PROJECT_DESCRIPTION%
-  version: %PROJECT_VERSION%
+  title: "%PROJECT_NAME%"
+  description: "%PROJECT_DESCRIPTION%"
+  version: "%PROJECT_VERSION%"
 
 servers:
   - url: "http://%ADDRESS%"

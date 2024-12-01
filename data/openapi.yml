@@ -36,14 +36,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericSensor"
-
-
-  /v1/mechanical/buzzer/activate:
+  /v1/minuteur/activate:
     post:
       tags:
-        - Mechanical
-      summary: "Active le buzzer après un délai et pendant une durée spécifiée."
-      description: "Envoie une requête pour activer le buzzer après un délai (`delay`) et pendant une durée spécifiée (`duration`)."
+        - Minuteur
+      summary: "Démare un minuteur"
+      description: "Envoie une requête pour activer le minteur après un délai (`delay`) et pendant une durée spécifiée (`duration`)."
       parameters:
         - name: delay
           in: query
@@ -62,25 +60,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivateBuzzerResponse"
+                $ref: "#/components/schemas/Success"
         '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /v1/mechanical/buzzer/stop:
+                $ref: "#/components/schemas/Error"
+  /v1/minuteur/stop:
     post:
       tags:
-        - Mechanical
-      summary: "Arrête le buzzer immédiatement."
-      description: "Envoie une requête pour arrêter le buzzer si ce dernier est en train de sonner."
+        - Minuteur 
+      summary: "Arrête le minuteur"
+      description: "Cette requête arrête le minuteur immédiatement, cela inclut arrêter un buzzer planifier."
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StopBuzzerResponse"
+                $ref: "#/components/schemas/Success"
 
 components:
   schemas:
@@ -102,22 +99,13 @@ components:
           type: string
         value:
           type: integer
-     ActivateBuzzerResponse:
+    Success:
+      type: boolean
+      properties:
+        success:
+          type: boolean 
+    Error:
       type: object
       properties:
         message:
-          type: string
-        delay:
-          type: integer
-        duration:
-          type: integer
-    StopBuzzerResponse:
-      type: object
-      properties:
-        message:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
           type: string

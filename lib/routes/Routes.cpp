@@ -2,6 +2,7 @@
 #include "ESPAsyncWebServer.h"
 #include "WiFi.h"
 #include "esp_log.h"
+#include "Buzzer.h"
 #include "Routes.h"
 
 #define HANDLE_OAPI_VAR(variable) \
@@ -25,9 +26,7 @@ namespace routes
   namespace oapi
   {
     void handle_oapi_schema(AsyncWebServerRequest *request)
-    {
-      request->send(SPIFFS, "/openapi.yml", "text/yaml", false, oapi_schema_variables_processor);
-    }
+    { request->send(SPIFFS, "/openapi.yml", "text/yaml", false, oapi_schema_variables_processor); }
 
     void handle_scalar(AsyncWebServerRequest *request)
     {
@@ -65,29 +64,29 @@ void routes::sensors::handle_photocell_sensor(AsyncWebServerRequest *request)
 
 void routes::mechanical::handle_buzzer_activate(AsyncWebServerRequest *request)
 {
-  if (!request->hasParam("delay", true) || !request->hasParam("duration", true))
+  if (!request->hasParam("delay") || !request->hasParam("duration"))
   {
     AsyncJsonResponse *response = new AsyncJsonResponse();
     JsonVariant &root = response->getRoot();
-    root["error"] = "Missing parameters: delay or duration";
+    root["message"] = "Il manque la duration ou le délai!";
+    response->setCode(400);
     response->setLength();
     request->send(response);
     return;
   }
 
-  unsigned long delay = request->getParam("delay", true)->value().toInt();
-  unsigned long duration = request->getParam("duration", true)->value().toInt();
-
-  buzzer.buzz(delay, duration);
+  unsigned long delay = request->getParam("delay")->value().toInt();
+  unsigned long duration = request->getParam("duration")->value().toInt();
 
   AsyncJsonResponse *response = new AsyncJsonResponse();
   JsonVariant &root = response->getRoot();
-  root["message"] = "Buzzer will activate in the specified delay and last for the specified duration.";
-  root["delay"] = delay;
-  root["duration"] = duration;
+  root["success"] = !buzzer.is_planned();
 
   response->setLength();
   request->send(response);
+
+  if (!buzzer.is_planned())
+    buzzer.buzz(delay, duration);
 }
 
 void routes::mechanical::handle_buzzer_stop(AsyncWebServerRequest *request)
@@ -95,7 +94,7 @@ void routes::mechanical::handle_buzzer_stop(AsyncWebServerRequest *request)
   buzzer.stop();
   AsyncJsonResponse *response = new AsyncJsonResponse();
   JsonVariant &root = response->getRoot();
-  root["message"] = "Buzzer has been stopped.";
+  root["success"] = buzzer.is_planned() || buzzer.has_started();
   response->setLength();
   request->send(response);
 }

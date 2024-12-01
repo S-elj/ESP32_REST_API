@@ -1,17 +1,18 @@
-#ifndef BUZZER_H
-#define BUZZER_H
-
 class Buzzer
 {
 private:
-    int _pin;
+  int _pin;
+  long timestampDepart;
+  long timestampFin;
 
 public:
-    Buzzer(int pin);
-
-    void buzz(unsigned long delay, unsigned long duration);
-
-    void stop();
+  Buzzer(int pin);
+  void buzz(unsigned long delay, unsigned long duration);
+  bool is_planned();
+  bool has_started();
+  bool has_finished();
+  void stop();
+  void loop();
 };
 
-#endif BUZZER_H
+extern Buzzer buzzer;

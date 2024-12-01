@@ -2,9 +2,6 @@
 #include <AsyncJson.h>
 #include <SPIFFS.h>
 
-class Monitoring {
-  public:
-};
 namespace routes {
   namespace oapi {
     // Renvoie le schéma OpenAPI de l'API pour le projet, disponible dans le dossier `/data/openapi.yml`.
@@ -21,5 +18,9 @@ namespace routes {
   namespace sensors {
     // Renvoie les métadonnées à propos du photocell, généralement placé au pin 36.
     void handle_photocell_sensor(AsyncWebServerRequest *request);
+  }
+  namespace mechanical {
+    void handle_buzzer_stop(AsyncWebServerRequest *request);
+    void handle_buzzer_activate(AsyncWebServerRequest *request);
   }
 }

@@ -12,6 +12,5 @@ env.Append(
     BUILD_FLAGS=[
         f'-D LED_PIN={led_pin}',
         f'-D PHOTOCELL_PIN={photocell_pin}',
-        f'-D THERMISTOR_PIN={thermistor_pin}'
     ]
 )

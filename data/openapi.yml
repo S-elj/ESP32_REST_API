@@ -11,6 +11,10 @@ servers:
 tags:
   - name: Metadata
     description: Des requêtes qui permettent de récupérer des informations autour du serveur web (et non pas d'effectuer des actions !)
+  - name: Minuteur 
+    description: Des requêtent qui permettent le contrôle du buzzer, notamment afin de mettre en place des minuteurs.
+  - name: Led
+    description: Des requêtes qui permettent le contrôle de la LED.
 
 paths:
   /v1/metadata:

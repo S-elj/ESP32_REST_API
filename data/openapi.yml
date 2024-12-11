@@ -36,6 +36,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericSensor"
+  /v1/minuteur/activate:
+    post:
+      tags:
+        - Minuteur
+      summary: "Démare un minuteur"
+      description: "Envoie une requête pour activer le minteur après un délai (`delay`) et pendant une durée spécifiée (`duration`)."
+      parameters:
+        - name: delay
+          in: query
+          required: true
+          description: "Délai avant d'activer le buzzer (en millisecondes)."
+          schema:
+            type: integer
+        - name: duration
+          in: query
+          required: true
+          description: "Durée pendant laquelle le buzzer sonne (en millisecondes)."
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/minuteur/stop:
+    post:
+      tags:
+        - Minuteur 
+      summary: "Arrête le minuteur"
+      description: "Cette requête arrête le minuteur immédiatement, cela inclut arrêter un buzzer planifier."
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
 
 components:
   schemas:
@@ -57,3 +99,13 @@ components:
           type: string
         value:
           type: integer
+    Success:
+      type: boolean
+      properties:
+        success:
+          type: boolean 
+    Error:
+      type: object
+      properties:
+        message:
+          type: string

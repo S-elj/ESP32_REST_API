@@ -2,8 +2,9 @@
 #include "ESPAsyncWebServer.h"
 #include "WiFi.h"
 #include "esp_log.h"
-#include "Buzzer.h"
 #include "Routes.h"
+#include "Buzzer.h"
+#include "Led.h"
 
 #define HANDLE_OAPI_VAR(variable) \
   if (var == #variable)           \
@@ -21,42 +22,33 @@ String oapi_schema_variables_processor(const String &var)
   return String();
 }
 
-namespace routes
-{
-  namespace oapi
-  {
-    void handle_oapi_schema(AsyncWebServerRequest *request)
-    { request->send(SPIFFS, "/openapi.yml", "text/yaml", false, oapi_schema_variables_processor); }
-
-    void handle_scalar(AsyncWebServerRequest *request)
-    {
-      request->send(SPIFFS, "/index.html", "text/html", false, oapi_schema_variables_processor);
-    }
-  }
-  namespace monitoring
-  {
-    void handle_root(AsyncWebServerRequest *request)
-    {
-      AsyncJsonResponse *response = new AsyncJsonResponse();
-
-      JsonVariant &root = response->getRoot();
-      root["name"] = String(PROJECT_NAME);
-      root["description"] = String(PROJECT_DESCRIPTION);
-      root["version"] = String(PROJECT_VERSION);
-      root["uptime"] = esp_log_timestamp();
-
-      response->setLength();
-      request->send(response);
-    };
-  }
+void routes::oapi::handle_oapi_schema(AsyncWebServerRequest *request) {
+  request->send(SPIFFS, "/openapi.yml", "text/yaml", false, oapi_schema_variables_processor);
 }
-void routes::sensors::handle_photocell_sensor(AsyncWebServerRequest *request)
-{
-  AsyncJsonResponse *response = new AsyncJsonResponse();
 
-  JsonVariant &root = response->getRoot();
+void routes::oapi::handle_scalar(AsyncWebServerRequest *request) {
+  request->send(SPIFFS, "/index.html", "text/html", false, oapi_schema_variables_processor);
+}
+
+void routes::monitoring::handle_root(AsyncWebServerRequest *request) {
+  AsyncJsonResponse * response = new AsyncJsonResponse();
+
+  JsonVariant& root = response->getRoot();
+  root["name"] = String(PROJECT_NAME);
+  root["description"] = String(PROJECT_DESCRIPTION);
+  root["version"] = String(PROJECT_VERSION);
+  root["uptime"] = esp_log_timestamp();
+
+  response->setLength();
+  request->send(response);
+};
+
+void routes::sensors::handle_photocell_sensor(AsyncWebServerRequest *request) {
+  AsyncJsonResponse * response = new AsyncJsonResponse();
+
+  JsonVariant& root = response->getRoot();
   root["name"] = String("photocell");
-  root["value"] = analogRead(36);
+  root["value"] = analogRead(PHOTOCELL_PIN);
 
   response->setLength();
   request->send(response);
@@ -97,4 +89,63 @@ void routes::mechanical::handle_buzzer_stop(AsyncWebServerRequest *request)
   root["success"] = buzzer.is_planned() || buzzer.has_started();
   response->setLength();
   request->send(response);
+}
+
+void routes::mechanical::handle_led_get_state(AsyncWebServerRequest *request) {
+  AsyncJsonResponse *response = new AsyncJsonResponse();
+  JsonVariant &root = response->getRoot();
+  root["is_automatic"] = led.is_automatic();
+  root["luminosity"] = led.get_luminosity();
+  response->setLength();
+  request->send(response);
+}
+
+void routes::mechanical::handle_led_set_automatic(AsyncWebServerRequest *request)
+{
+  if (!request->hasParam("enabled"))
+  {
+    AsyncJsonResponse *response = new AsyncJsonResponse();
+    JsonVariant &root = response->getRoot();
+    root["message"] = "Il faut spécifier la valeur du mode automatique!";
+    response->setCode(400);
+    response->setLength();
+    request->send(response);
+    return;
+  }
+
+  bool automatic = request->getParam("enabled")->value().equalsIgnoreCase("true");
+
+  AsyncJsonResponse *response = new AsyncJsonResponse();
+  JsonVariant &root = response->getRoot();
+  root["success"] = true;
+
+  response->setLength();
+  request->send(response);
+
+  led.set_automatic(automatic);
+}
+
+void routes::mechanical::handle_led_set_luminosity(AsyncWebServerRequest *request)
+{
+  if (!request->hasParam("value"))
+  {
+    AsyncJsonResponse *response = new AsyncJsonResponse();
+    JsonVariant &root = response->getRoot();
+    root["message"] = "Il faut spécifier la valeur du mode automatique!";
+    response->setCode(400);
+    response->setLength();
+    request->send(response);
+    return;
+  }
+
+  double value = request->getParam("value")->value().toDouble();
+
+  AsyncJsonResponse *response = new AsyncJsonResponse();
+  JsonVariant &root = response->getRoot();
+  root["success"] = true;
+
+  response->setLength();
+  request->send(response);
+
+  led.set_luminosity(value);
 }

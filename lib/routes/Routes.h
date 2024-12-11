@@ -22,5 +22,8 @@ namespace routes {
   namespace mechanical {
     void handle_buzzer_stop(AsyncWebServerRequest *request);
     void handle_buzzer_activate(AsyncWebServerRequest *request);
+    void handle_led_get_state(AsyncWebServerRequest *request);
+    void handle_led_set_automatic(AsyncWebServerRequest *request);
+    void handle_led_set_luminosity(AsyncWebServerRequest *request);
   }
 }

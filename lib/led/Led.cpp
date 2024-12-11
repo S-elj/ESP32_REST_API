@@ -25,6 +25,9 @@ double Led::get_luminosity() {
 }
 
 void Led::set_luminosity(double value) {
+  if (this->is_automatic()) {
+    this->set_automatic(false);
+  }
   this->_luminosity = value;
 }
 

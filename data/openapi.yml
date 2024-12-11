@@ -78,6 +78,66 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Success"
+  /v1/led/state:
+    get:
+      tags:
+        - Led
+      summary: "Récupère le statut de la LED"
+      description: "Le statut de la LED inclut savoir si elle est en mode automatique ainsi que sa luminosité actuelle."
+      reponses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/"
+  /v1/led/automatic:
+    post:
+      tags:
+        - Led
+      summary: "Active/désactive le mode automatique"
+      description: "En passant en mode automatique, la LED gère sa luminosité automatiquement en fonction de la lumière ambiante"
+      parameters:
+        - name: enabled
+          in: query
+          required: true
+          description: "Un booléen étant `true` si le mode automatique doit-être activé."
+          schema:
+            type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/led/luminosity:
+    post:
+      tags:
+        - Led
+      summary: "Modifie la luminosité"
+      description: "Modifie la luminosité de la LED. Si la LED est déjà en mode automatique, le désactive."
+      parameters:
+        - name: value 
+          in: query
+          required: true
+          description: "La luminosité entre [0..1]"
+          minimum: 0
+          maximum: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -98,9 +158,16 @@ components:
         name:
           type: string
         value:
-          type: integer
+          type: double
+    LedState:
+      type: object
+      properties:
+        is_automatic:
+          type: boolean
+        luminosity:
+          type: double
     Success:
-      type: boolean
+      type: object
       properties:
         success:
           type: boolean 

@@ -52,13 +52,13 @@ paths:
           required: true
           description: "Délai avant d'activer le buzzer (en millisecondes)."
           schema:
-            type: integer
+            type: number
         - name: duration
           in: query
           required: true
           description: "Durée pendant laquelle le buzzer sonne (en millisecondes)."
           schema:
-            type: integer
+            type: number
       responses:
         '200':
           content:
@@ -88,7 +88,7 @@ paths:
         - Led
       summary: "Récupère le statut de la LED"
       description: "Le statut de la LED inclut savoir si elle est en mode automatique ainsi que sa luminosité actuelle."
-      reponses:
+      responses:
         '200':
           content:
             application/json:
@@ -181,23 +181,23 @@ components:
         version:
           type: string
         uptime:
-          type: integer
+          type: number
     GenericSensor:
       type: object
       properties:
         name:
           type: string
         value:
-          type: double
+          type: number 
     LedState:
       type: object
       properties:
         is_automatic:
           type: boolean
         luminosity:
-          type: double
+          type: number
         threshold:
-          type: double
+          type: number 
     Success:
       type: object
       properties:

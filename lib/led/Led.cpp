@@ -18,18 +18,18 @@ void Led::set_automatic(bool automatic) { this->_automatic = automatic; }
 
 double Led::get_luminosity() {
   if (!this->is_automatic())
-    return (double)analogRead(this->_photocellPin) / MAX_VALUE;
-  return this->_luminosity;
+    return (this->get_threshold() * MAX_VALUE <=
+            analogRead(this->_photocellPin))
+               ? this->_luminosity
+               : 0.0;
+  return (double)analogRead(this->_photocellPin) / MAX_VALUE;
 }
 
 void Led::set_luminosity(double value) {
   if (this->is_automatic()) {
     this->set_automatic(false);
   }
-  if (this->get_threshold() * MAX_VALUE <= get_luminosity())
-    this->_luminosity = value;
-  else
-    this->_luminosity = 0.0;
+  this->_luminosity = value;
 }
 
 void Led::set_threshold(double threshold) {

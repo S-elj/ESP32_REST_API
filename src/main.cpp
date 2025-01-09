@@ -25,6 +25,7 @@ void setup() {
   server.on("/openapi.yml", HTTP_GET, routes::oapi::handle_oapi_schema);
   server.on("/scalar", HTTP_GET, routes::oapi::handle_scalar);
   server.on("/v1/metadata", HTTP_GET, routes::monitoring::handle_root);
+
   server.on("/v1/sensors/photocell", HTTP_GET,
             routes::sensors::handle_photocell_sensor);
   server.on("/v1/minuteur/activate", HTTP_POST,

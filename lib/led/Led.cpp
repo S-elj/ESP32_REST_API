@@ -39,6 +39,8 @@ void Led::set_threshold(double threshold) {
   this->_threshold = threshold;
 }
 
+double Led::get_threshold() { return this->_threshold; }
+
 void Led::loop() { analogWrite(LED_PIN, (int)(this->get_luminosity() * 255)); }
 
 Led led = Led(LED_PIN, PHOTOCELL_PIN);

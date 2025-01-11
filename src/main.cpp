@@ -29,6 +29,10 @@ void setup() {
 
   server.on("/v1/sensors/photocell", HTTP_GET,
             routes::sensors::handle_photocell_sensor);
+  server.on("/v1/sensors/thermistor", HTTP_GET,
+            routes::sensors::handle_thermistor_sensor);
+  server.on("/v1/minuteur/state", HTTP_GET,
+            routes::mechanical::handle_buzzer_state);
   server.on("/v1/minuteur/activate", HTTP_POST,
             routes::mechanical::handle_buzzer_activate);
   server.on("/v1/minuteur/stop", HTTP_POST,

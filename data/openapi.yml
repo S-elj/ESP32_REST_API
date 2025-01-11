@@ -52,7 +52,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/GenericSensor"
 
-  /v1/minteur/state:
+  /v1/minuteur/state:
     get:
       tags:
         - Minuteur

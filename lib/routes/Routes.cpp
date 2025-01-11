@@ -50,6 +50,32 @@ void routes::sensors::handle_photocell_sensor(AsyncWebServerRequest *request) {
   JsonVariant &root = response->getRoot();
   root["name"] = String("photocell");
   root["value"] = analogRead(PHOTOCELL_PIN);
+  root["pin"] = PHOTOCELL_PIN;
+
+  response->setLength();
+  request->send(response);
+}
+
+void routes::sensors::handle_thermistor_sensor(AsyncWebServerRequest *request) {
+  AsyncJsonResponse *response = new AsyncJsonResponse();
+
+  JsonVariant &root = response->getRoot();
+  root["name"] = String("thermistor");
+  root["value"] = analogRead(THERMISTOR_PIN);
+  root["pin"] = THERMISTOR_PIN;
+
+  response->setLength();
+  request->send(response);
+}
+
+void routes::mechanical::handle_buzzer_state(AsyncWebServerRequest *request) {
+  AsyncJsonResponse *response = new AsyncJsonResponse();
+
+  JsonVariant &root = response->getRoot();
+  root["is_planned"] = buzzer.is_planned();
+  root["is_running"] = buzzer.has_started() && !buzzer.has_finished();
+  root["time_until_start"] = buzzer.timeUntilStart();
+  root["time_remaining"] = buzzer.timeRemaining();
 
   response->setLength();
   request->send(response);

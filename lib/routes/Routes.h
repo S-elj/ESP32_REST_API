@@ -20,8 +20,10 @@ void handle_root(AsyncWebServerRequest *request);
 namespace sensors {
 // Renvoie les métadonnées à propos du photocell, généralement placé au pin 36.
 void handle_photocell_sensor(AsyncWebServerRequest *request);
+void handle_thermistor_sensor(AsyncWebServerRequest *request);
 } // namespace sensors
 namespace mechanical {
+void handle_buzzer_state(AsyncWebServerRequest *request);
 void handle_buzzer_stop(AsyncWebServerRequest *request);
 void handle_buzzer_activate(AsyncWebServerRequest *request);
 void handle_led_get_state(AsyncWebServerRequest *request);

@@ -40,6 +40,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericSensor"
+  /v1/sensors/thermistor:
+    get:
+      tags:
+        - Sensors
+      summary: "Récupère la valeur actuelle pour le sensor thermistor"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericSensor"
+
+  /v1/minuteur/state:
+    get:
+      tags:
+        - Minuteur
+      summary: "Récupère l'état actuel du minuteur"
+      description: "Récupère les informations importantes à propos du minuteur afin de mieux comprendre son état."
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BuzzerState"
   /v1/minuteur/activate:
     post:
       tags:
@@ -189,6 +213,8 @@ components:
           type: string
         value:
           type: number 
+        pin:
+          type: number
     LedState:
       type: object
       properties:
@@ -197,6 +223,17 @@ components:
         luminosity:
           type: number
         threshold:
+          type: number 
+    BuzzerState:
+      type: object
+      properties:
+        is_planned:
+          type: boolean
+        is_running:
+          type: boolean 
+        time_until_start:
+          type: boolean
+        time_remaining:
           type: number 
     Success:
       type: object

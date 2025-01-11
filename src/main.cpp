@@ -5,9 +5,11 @@
 #include "Buzzer.h"
 #include "Led.h"
 #include "Routes.h"
+#include "UI.h"
 #include "WiFi_utils.h"
 
 AsyncWebServer server(80);
+UI ui = UI();
 
 void setup() {
   Serial.begin(MONITOR_SPEED);
@@ -22,6 +24,8 @@ void setup() {
   // Mise en place des pins
   pinMode(PHOTOCELL_PIN, INPUT);
   pinMode(THERMISTOR_PIN, INPUT);
+
+  ui.begin();
 
   server.on("/openapi.yml", HTTP_GET, routes::oapi::handle_oapi_schema);
   server.on("/scalar", HTTP_GET, routes::oapi::handle_scalar);
@@ -55,6 +59,7 @@ void setup() {
 }
 
 void loop() {
+  ui.loop();
   buzzer.loop();
   led.loop();
   delay(100);

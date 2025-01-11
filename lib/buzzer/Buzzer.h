@@ -21,6 +21,10 @@ public:
   // sens si le timer n'a pas commencé, penser à utiliser `has_started` et
   // `has_finished`
   long timeRemaining();
+  // Retourne le temps avant que le buzzer ne démarre. Même remarque que pour
+  // `timeRemaining`, penser à utiliser les autres fonctions pour vérifier
+  // l'état avant!
+  long timeUntilStart();
   // Arrête le buzzer
   void stop();
   // S'exécute au niveau de la loupe afin de s'assurer d'avoir un buzzer qui

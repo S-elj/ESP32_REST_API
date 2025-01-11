@@ -21,6 +21,7 @@ void setup() {
   }
   // Mise en place des pins
   pinMode(PHOTOCELL_PIN, INPUT);
+  pinMode(THERMISTOR_PIN, INPUT);
 
   server.on("/openapi.yml", HTTP_GET, routes::oapi::handle_oapi_schema);
   server.on("/scalar", HTTP_GET, routes::oapi::handle_scalar);
@@ -52,5 +53,5 @@ void setup() {
 void loop() {
   buzzer.loop();
   led.loop();
-  delay(200);
+  delay(100);
 }

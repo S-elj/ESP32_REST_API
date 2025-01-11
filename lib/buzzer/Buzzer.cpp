@@ -30,6 +30,8 @@ boolean Buzzer::has_finished() { return timestampFin <= esp_log_timestamp(); }
 // `has_finished`
 long Buzzer::timeRemaining() { return timestampFin - esp_log_timestamp(); }
 
+long Buzzer::timeUntilStart() { return timestampDepart - esp_log_timestamp(); }
+
 // Arrête le buzzer
 void Buzzer::stop() {
   timestampDepart = 0;
@@ -47,7 +49,7 @@ void Buzzer::loop() {
     return;
 
   if (!has_finished()) {
-    tone(_pin, 1109, 201);
+    tone(_pin, 1109, 101);
   } else {
     stop();
   }

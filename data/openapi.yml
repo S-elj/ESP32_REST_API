@@ -44,21 +44,21 @@ paths:
     post:
       tags:
         - Minuteur
-      summary: "Démare un minuteur"
-      description: "Envoie une requête pour activer le minteur après un délai (`delay`) et pendant une durée spécifiée (`duration`)."
+      summary: "Démarre un minuteur"
+      description: "Envoie une requête pour activer le minuteur après un délai (`delay`) et pendant une durée spécifiée (`duration`)."
       parameters:
         - name: delay
           in: query
           required: true
           description: "Délai avant d'activer le buzzer (en millisecondes)."
           schema:
-            type: integer
+            type: number
         - name: duration
           in: query
           required: true
           description: "Durée pendant laquelle le buzzer sonne (en millisecondes)."
           schema:
-            type: integer
+            type: number
       responses:
         '200':
           content:
@@ -75,7 +75,7 @@ paths:
       tags:
         - Minuteur 
       summary: "Arrête le minuteur"
-      description: "Cette requête arrête le minuteur immédiatement, cela inclut arrêter un buzzer planifier."
+      description: "Cette requête arrête le minuteur immédiatement, cela inclut arrêter un buzzer planifié."
       responses:
         '200':
           content:
@@ -88,12 +88,12 @@ paths:
         - Led
       summary: "Récupère le statut de la LED"
       description: "Le statut de la LED inclut savoir si elle est en mode automatique ainsi que sa luminosité actuelle."
-      reponses:
+      responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/"
+                $ref: "#/components/schemas/LedState"
   /v1/led/automatic:
     post:
       tags:
@@ -142,6 +142,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /v1/led/threshold:
+    post:
+      tags:
+        - Led
+      summary: "Modifie le seuil de luminosité de la LED"
+      description: "Définit une nouvelle valeur de seuil pour ajuster la luminosité automatique."
+      parameters:
+        - name: value
+          in: query
+          required: true
+          description: "Valeur du seuil entre 0 et 1."
+          schema:
+            type: number
+            minimum: 0
+            maximum: 1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
@@ -155,21 +181,23 @@ components:
         version:
           type: string
         uptime:
-          type: integer
+          type: number
     GenericSensor:
       type: object
       properties:
         name:
           type: string
         value:
-          type: double
+          type: number 
     LedState:
       type: object
       properties:
         is_automatic:
           type: boolean
         luminosity:
-          type: double
+          type: number
+        threshold:
+          type: number 
     Success:
       type: object
       properties:

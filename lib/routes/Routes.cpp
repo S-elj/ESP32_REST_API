@@ -3,6 +3,7 @@
 #include "Buzzer.h"
 #include "ESPAsyncWebServer.h"
 #include "Led.h"
+#include "Thermistor.h"
 #include "WiFi.h"
 #include "esp_log.h"
 
@@ -61,7 +62,7 @@ void routes::sensors::handle_thermistor_sensor(AsyncWebServerRequest *request) {
 
   JsonVariant &root = response->getRoot();
   root["name"] = String("thermistor");
-  root["value"] = analogRead(THERMISTOR_PIN);
+  root["value"] = to_degrees(analogRead(THERMISTOR_PIN));
   root["pin"] = THERMISTOR_PIN;
 
   response->setLength();

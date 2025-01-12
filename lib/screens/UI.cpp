@@ -1,6 +1,8 @@
 #include "UI.h"
 #include "Buzzer.h"
 #include "Led.h"
+#include "Thermistor.h"
+#include <cmath>
 
 #define BUTTON_1 0  // Bouton pour avancer
 #define BUTTON_2 35 // Bouton pour reculer
@@ -98,7 +100,7 @@ void UI::drawSensorScreen() {
   _tft.drawString(photoStr, 10, 40);
 
   char thermoStr[30];
-  sprintf(thermoStr, "Thermistor: %d", thermistorValue);
+  sprintf(thermoStr, "Thermistor: %.2f", to_degrees(thermistorValue));
   _tft.setTextColor(TFT_CYAN);
   _tft.drawString(thermoStr, 10, 60);
 

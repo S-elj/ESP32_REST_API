@@ -36,14 +36,14 @@ void UI::drawBuzzerScreen() {
       _tft.drawString("ACTIF", 10, 40);
       char timeStr[22];
       sprintf(timeStr, "Temps restant: %0.2f s",
-              buzzer.timeRemaining() / 1000.0);
+              buzzer.time_remaining() / 1000.0);
       _tft.drawString(timeStr, 10, 60);
     } else {
       _tft.setTextColor(TFT_YELLOW);
       _tft.drawString("PLANIFIÉ", 10, 40);
       char timeStr[22];
       sprintf(timeStr, "Commence dans: %0.2f s",
-              buzzer.timeUntilStart() / 1000.0);
+              buzzer.time_until_start() / 1000.0);
       _tft.drawString(timeStr, 10, 60);
     }
   } else {
@@ -140,4 +140,3 @@ void UI::loop() {
     lastRefresh = millis();
   }
 }
-

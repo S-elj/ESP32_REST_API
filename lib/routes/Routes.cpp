@@ -74,7 +74,7 @@ void routes::mechanical::handle_buzzer_state(AsyncWebServerRequest *request) {
   JsonVariant &root = response->getRoot();
   root["is_planned"] = buzzer.is_planned();
   root["is_running"] = buzzer.has_started() && !buzzer.has_finished();
-  root["time_until_start"] = buzzer.timeUntilStart();
+  root["time_until_start"] = buzzer.time_until_start();
   root["time_remaining"] = buzzer.timeRemaining();
 
   response->setLength();

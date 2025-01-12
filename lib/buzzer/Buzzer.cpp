@@ -28,9 +28,11 @@ boolean Buzzer::has_finished() { return timestampFin <= esp_log_timestamp(); }
 // Retourne le temps restant au buzzer avant de s'arrêter, ce temps n'a pas de
 // sens si le timer n'a pas commencé, penser à utiliser `has_started` et
 // `has_finished`
-long Buzzer::timeRemaining() { return timestampFin - esp_log_timestamp(); }
+long Buzzer::time_remaining() { return timestampFin - esp_log_timestamp(); }
 
-long Buzzer::timeUntilStart() { return timestampDepart - esp_log_timestamp(); }
+long Buzzer::time_until_start() {
+  return timestampDepart - esp_log_timestamp();
+}
 
 // Arrête le buzzer
 void Buzzer::stop() {
@@ -55,4 +57,4 @@ void Buzzer::loop() {
   }
 }
 
-Buzzer buzzer = Buzzer(2);
+Buzzer buzzer = Buzzer(BUZZER_PIN);
